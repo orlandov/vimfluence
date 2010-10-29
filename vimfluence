@@ -1,0 +1,121 @@
+#!/usr/bin/perl
+
+
+package main;
+
+use strict;
+use warnings;
+use Net::Netrc;
+use File::Temp qw( mkstemps );
+use Digest::MD5 qw( md5_hex );
+
+use constant server => $ENV{WIKI_URL};
+
+my $space = $ARGV[0] || "dev";
+my $title = $ARGV[1];
+
+my $lookup = Net::Netrc->lookup(server);
+my $login = $lookup->login;
+my $password = $lookup->password;
+
+my $confluence = Confluence->new(server, $login, $password);
+my $output = $confluence->fetch_page($space, $title);
+my $initialMD5 = md5_hex($output);
+
+my ($fh, $filename) = mkstemps("tmpfileXXXXXX", ".confluencewiki");
+
+print $fh $output;
+close $fh;
+
+system("vim +\"set ft=confluencewiki\" $filename");
+my $afterMD5 = md5_hex(readfile($filename));
+
+if ($afterMD5 ne $initialMD5) {
+    print "File changed.\n";
+    print "Updating wiki...\n";
+    $confluence->store_page($title, $filename);
+    print "Done.\n";
+}
+
+exit 0;
+
+sub readfile {
+  my $filename = shift;
+  open(my $fh, $filename);
+  my $s = join "", (<$fh>);
+  close $fh;
+  return $s;
+}
+
+1;
+
+package Confluence;
+
+use strict;
+use warnings;
+
+use constant confluence_path => $ENV{CONFLUENCE_PATH};
+
+sub new {
+  my $proto = shift;
+  my ($server, $login, $password) = @_;
+
+  
+  return bless { server        => $server
+               , login         => $login
+               , password      => $password
+               , common_params => [ '--server', $server, '-u', $login, '-p', "\"$password\"" ]
+               }, ref($proto) || $proto;
+}
+
+sub _run_cmd {
+  my $self = shift;
+  my ($params) = @_;
+
+  chdir confluence_path;
+
+  my $param_string = join " ", @$params;
+  open my $fh, "./confluence.sh $param_string |"
+    or die "Couldn't execute confluence cli script\n";
+
+  # burn the first line
+  <$fh>;
+
+  my $s = join "", (<$fh>);
+  close $fh or die "could not close pipe";
+
+  return $s;
+}
+
+sub fetch_page {
+  my $self = shift;
+  my ($space, $title) = @_;
+
+  my $cmd = [ @{$self->{common_params}}
+            , '-a'      => 'getSource'
+            , '--space' => 'dev'
+            , '--title' => "\"$title\""
+            ];
+
+  my $content = $self->_run_cmd($cmd);
+
+  return $content;
+};
+
+sub store_page {
+  my $self = shift;
+  my ($title, $filename) = @_;
+
+  my $cmd = [ @{$self->{common_params}}
+            , '-a'      => 'storePage'
+            , '--space' => 'dev'
+            , '--title' => "\"$title\""
+            , '--file'  => "\"$filename\""
+            ];
+
+  my $content = $self->_run_cmd($cmd);
+
+  return $content;
+};
+
+1;

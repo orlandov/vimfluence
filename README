@@ -1,0 +1,31 @@
+Vimfluence - Edit Confluence with Vim
+
+Free yourself from the shackles of WYSIWYG and TextArea wiki editors. Reach
+unheralded levels of productivity by editing your Confluence wiki with the
+most power text editor known to man kind: Vim!
+
+INSTALLATION
+
+- Download the Confluence command line client from:
+  https://studio.plugins.atlassian.com/wiki/display/CSOAP/Confluence+Command+Line+Interface
+
+- Unzip download and put the Confluence directory somewhere.
+
+- Download and install the confluencewiki syntax plugin from
+  http://www.vim.org/scripts/script.php?script_id=1994
+
+- Edit your .profile to set the paths:
+    CONFLUENCE_PATH -> Points to the directory with the Confluence cli client
+    WIKI_URL        -> URL to your wiki (eg. http://wiki.example.com/wiki)
+
+- Drop vimfluence somewhere in your path.
+
+- Create a ~/.netrc file with your wiki url and login/password. Change the
+  permission to 0600.
+
+- Run vimfluence: `vimfluence MySpace "My Wiki Page"`
+
+
+Oh and...
+
+You're Welcome!
