@@ -2,14 +2,14 @@ Vimfluence - Edit Confluence with Vim
 
 Free yourself from the shackles of WYSIWYG and TextArea wiki editors. Reach
 unheralded levels of productivity by editing your Confluence wiki with the
-most power text editor known to man kind: Vim!
+most powerful text editor known to man kind: Vim!
 
 INSTALLATION
 
-- Download the Confluence command line client from:
+- Download the Confluence command line client JAR zip file from:
   https://studio.plugins.atlassian.com/wiki/display/CSOAP/Confluence+Command+Line+Interface
 
-- Unzip download and put the Confluence directory somewhere.
+- Unzip zipfile and put the Confluence directory somewhere.
 
 - Download and install the confluencewiki syntax plugin from
   http://www.vim.org/scripts/script.php?script_id=1994
@@ -29,3 +29,6 @@ INSTALLATION
 Oh and...
 
 You're Welcome!
+
+-- 
+Orlando
