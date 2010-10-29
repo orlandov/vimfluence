@@ -23,6 +23,10 @@ INSTALLATION
 - Create a ~/.netrc file with your wiki url and login/password. Change the
   permission to 0600.
 
+  machine http://hub.example.com/wiki
+    login myuser@example.com
+    password mypassword
+
 - Run vimfluence: `vimfluence MySpace "My Wiki Page"`
 
 
