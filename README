@@ -2,32 +2,33 @@ Vimfluence - Edit Confluence with Vim
 
 Free yourself from the shackles of WYSIWYG and TextArea wiki editors. Reach
 unheralded levels of productivity by editing your Confluence wiki with the
-most powerful text editor known to man kind: Vim!
+most powerful text editor known to mankind: Vim!
 
 INSTALLATION
 
-- Download the Confluence command line client JAR zip file from:
-  https://studio.plugins.atlassian.com/wiki/display/CSOAP/Confluence+Command+Line+Interface
+- (Optional) For confluence wiki syntax highlighting in Vim, download and
+  install the confluencewiki syntax plugin from
+  <http://www.vim.org/scripts/script.php?script_id=1994>
 
-- Unzip zipfile and put the Confluence directory somewhere.
+- Edit your "~/.profile" to set the wiki path:
 
-- Download and install the confluencewiki syntax plugin from
-  http://www.vim.org/scripts/script.php?script_id=1994
+      export WIKI_URL="http://hub.example.com/wiki"    # edit for your wiki path
 
-- Edit your .profile to set the paths:
-    CONFLUENCE_PATH -> Points to the directory with the Confluence cli client
-    WIKI_URL        -> URL to your wiki (eg. http://wiki.example.com/wiki)
+- Drop `vimfluence` somewhere in your path.
 
-- Drop vimfluence somewhere in your path.
-
-- Create a ~/.netrc file with your wiki url and login/password. Change the
+- Create a "~/.netrc" file with your wiki url and login/password. Change the
   permission to 0600.
 
-  machine http://hub.example.com/wiki
-    login myuser@example.com
-    password mypassword
+      machine http://hub.example.com/wiki
+        login myuser@example.com
+        password mypassword
 
 - Run vimfluence: `vimfluence MySpace "My Wiki Page"`
+
+- If you consistently editing pages in a particular Confluence space you might
+  like an alias like this:
+
+      alias devwiki="WIKI_URL=http://hub.example.com/wiki vimfluence dev"
 
 
 Oh and...
