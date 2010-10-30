@@ -34,10 +34,18 @@ if ($afterMD5 ne $initialMD5) {
     print "File changed.\n";
     print "Updating wiki...\n";
     $confluence->store_page($title, $filename);
-    print "Done.\n";
+    my $url = server . "/display/$space/" . urlencode($title);
+    print "Done <$url>.\n";
 }
 
 exit 0;
+
+sub urlencode {
+    my $s = shift;
+    $s =~ s/ /+/g;
+    $s =~ s/([^A-Za-z0-9\+-])/sprintf("%%%02X", ord($1))/seg;
+    return $s;
+}
 
 sub readfile {
   my $filename = shift;
