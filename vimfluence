@@ -61,13 +61,14 @@ package Confluence;
 
 use strict;
 use warnings;
+use File::Spec::Functions qw( catdir );
+use File::Basename qw( dirname );
 
-use constant confluence_path => $ENV{CONFLUENCE_PATH};
+use constant confluence_path => catdir(dirname(__FILE__), "externals/confluence-cli");
 
 sub new {
   my $proto = shift;
   my ($server, $login, $password) = @_;
-
   
   return bless { server        => $server
                , login         => $login
@@ -80,11 +81,11 @@ sub _run_cmd {
   my $self = shift;
   my ($params) = @_;
 
-  chdir confluence_path;
-
-  my $param_string = join " ", @$params;
-  open my $fh, "./confluence.sh $param_string |"
-    or die "Couldn't execute confluence cli script\n";
+  my $cmd = "java -jar \""
+    . confluence_path . "/release/confluence-cli-1.5.0.jar\" "
+    . join(" ", @$params);
+  open my $fh, $cmd . "|"
+    or die "Couldn't execute confluence cli script: '$cmd'\n";
 
   # burn the first line
   <$fh>;
