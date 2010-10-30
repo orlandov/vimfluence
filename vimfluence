@@ -33,7 +33,7 @@ my $afterMD5 = md5_hex(readfile($filename));
 if ($afterMD5 ne $initialMD5) {
     print "File changed.\n";
     print "Updating wiki...\n";
-    $confluence->store_page($title, $filename);
+    $confluence->store_page($space, $title, $filename);
     my $url = server . "/display/$space/" . urlencode($title);
     print "Done <$url>.\n";
 }
@@ -102,7 +102,7 @@ sub fetch_page {
 
   my $cmd = [ @{$self->{common_params}}
             , '-a'      => 'getSource'
-            , '--space' => 'dev'
+            , '--space' => $space
             , '--title' => "\"$title\""
             ];
 
@@ -113,11 +113,11 @@ sub fetch_page {
 
 sub store_page {
   my $self = shift;
-  my ($title, $filename) = @_;
+  my ($space, $title, $filename) = @_;
 
   my $cmd = [ @{$self->{common_params}}
             , '-a'      => 'storePage'
-            , '--space' => 'dev'
+            , '--space' => $space
             , '--title' => "\"$title\""
             , '--file'  => "\"$filename\""
             ];
