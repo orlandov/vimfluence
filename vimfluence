@@ -55,6 +55,7 @@ if ($afterMD5 ne $initialMD5) {
     print "Done <$url>.\n";
 }
 
+unlink $filename;
 exit 0;
 
 sub help {
