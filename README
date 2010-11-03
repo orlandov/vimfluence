@@ -30,6 +30,12 @@ INSTALLATION
 
       alias devwiki="WIKI_URL=http://hub.example.com/wiki vimfluence dev"
 
+- Alternatively you can also call `vimfluence` like this:
+
+        vimfluence http://hub.example.com/wiki/display/space/Page+Name
+
+  which can be handy for a quick cut 'n paste from the browser.
+
 
 Oh and...
 

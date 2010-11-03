@@ -8,17 +8,34 @@ use warnings;
 use Net::Netrc;
 use File::Temp qw( mkstemps );
 use Digest::MD5 qw( md5_hex );
+use URI::Split qw( uri_split uri_join );
 
-use constant server => $ENV{WIKI_URL};
 
-my $space = $ARGV[0] || "dev";
-my $title = $ARGV[1];
+my ($wiki_url, $space, $title);
+if ($#ARGV == 1) {
+    # `WIKI_URL=... vimfluence SPACE "PAGE NAME"`
+    $space = $ARGV[0];
+    $title = $ARGV[1];
+    $wiki_url = $ENV{WIKI_URL};
+} elsif ($#ARGV == 0 && $ARGV[0] =~ /^https?:\/\//) {
+    # `vimfluence URL-OF-WIKI-PAGE`
+    my $uri = $ARGV[0];
+    my ($scheme, $auth, $path, $query, $frag) = uri_split($uri);
+    my @parts = split(/\//, $path);
+    $wiki_url = uri_join($scheme, $auth, join('/', @parts[0..$#parts-3]));
+    $title = urldecode($parts[$#parts]);
+    $space = $parts[$#parts - 1];
+} else {
+    help();
+    exit 1;
+}
+#die "WIKI_URL: $wiki_url, SPACE: $space, TITLE: $title\n";
 
-my $lookup = Net::Netrc->lookup(server);
+my $lookup = Net::Netrc->lookup($wiki_url);
 my $login = $lookup->login;
 my $password = $lookup->password;
 
-my $confluence = Confluence->new(server, $login, $password);
+my $confluence = Confluence->new($wiki_url, $login, $password);
 my $output = $confluence->fetch_page($space, $title);
 my $initialMD5 = md5_hex($output);
 
@@ -34,16 +51,42 @@ if ($afterMD5 ne $initialMD5) {
     print "File changed.\n";
     print "Updating wiki...\n";
     $confluence->store_page($space, $title, $filename);
-    my $url = server . "/display/$space/" . urlencode($title);
+    my $url = $wiki_url . "/display/$space/" . urlencode($title);
     print "Done <$url>.\n";
 }
 
 exit 0;
 
+sub help {
+    print <<HELP;
+NAME
+    vimfluence -- edit Confluence wiki pages in Vim
+
+USAGE
+    WIKI_URL=http://hub.example.com/wiki vimfluence SPACE PAGE-TITLE
+    vimfluence WIKI-URL
+
+EXAMPLES
+    WIKI_URL=http://hub.example.com/wiki vimfluence dev "Fu Machu"
+
+        If you do this frequently you might want to setup an alias something
+        like: `alias devwiki='WIKI_URL=http://hub.example.com/wiki vimfluence dev'`
+
+    vimfluence http://hub.example.com/wiki/display/dev/Fu-Machu
+HELP
+}
+
 sub urlencode {
     my $s = shift;
     $s =~ s/ /+/g;
     $s =~ s/([^A-Za-z0-9\+-])/sprintf("%%%02X", ord($1))/seg;
+    return $s;
+}
+
+sub urldecode {
+    my $s = shift;
+    $s =~ s/\%([A-Fa-f0-9]{2})/pack('C', hex($1))/seg;
+    $s =~ s/\+/ /g;
     return $s;
 }
 
