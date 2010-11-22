@@ -11,7 +11,10 @@ use Digest::MD5 qw( md5_hex );
 use URI::Split qw( uri_split uri_join );
 
 
-my ($wiki_url, $space, $title);
+my ($wiki_url, $space, $title, $editor);
+
+$editor =  $ENV{WIKI_EDITOR} || $ENV{VISUAL} || $ENV{EDITOR};
+
 if ($#ARGV == 1) {
     # `WIKI_URL=... vimfluence SPACE "PAGE NAME"`
     $space = $ARGV[0];
@@ -29,7 +32,7 @@ if ($#ARGV == 1) {
     help();
     exit 1;
 }
-#die "WIKI_URL: $wiki_url, SPACE: $space, TITLE: $title\n";
+# die "EDITOR : $editor, WIKI_URL: $wiki_url, SPACE: $space, TITLE: $title\n";
 
 my $lookup = Net::Netrc->lookup($wiki_url);
 my $login = $lookup->login;
@@ -44,7 +47,8 @@ my ($fh, $filename) = mkstemps("tmpfileXXXXXX", ".confluencewiki");
 print $fh $output;
 close $fh;
 
-system("vim +\"set ft=confluencewiki\" $filename");
+# system("vim +\"set ft=confluencewiki\" $filename");
+system("$editor  $filename");
 my $afterMD5 = md5_hex(readfile($filename));
 
 if ($afterMD5 ne $initialMD5) {
