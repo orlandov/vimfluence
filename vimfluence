@@ -13,7 +13,7 @@ use URI::Split qw( uri_split uri_join );
 
 my ($wiki_url, $space, $title, $editor);
 
-$editor =  $ENV{WIKI_EDITOR} || $ENV{VISUAL} || $ENV{EDITOR};
+$editor =  $ENV{WIKI_EDITOR} || $ENV{VISUAL} || $ENV{EDITOR} || "vim +\"set ft=confluencewiki\"";
 
 if ($#ARGV == 1) {
     # `WIKI_URL=... vimfluence SPACE "PAGE NAME"`
