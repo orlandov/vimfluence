@@ -4,11 +4,17 @@ Free yourself from the shackles of WYSIWYG and TextArea wiki editors. Reach
 unheralded levels of productivity by editing your Confluence wiki with the
 most powerful text editor known to mankind: Vim!
 
+(You can use less powerful editors as well.)
+
 INSTALLATION
 
 - (Optional) For confluence wiki syntax highlighting in Vim, download and
   install the confluencewiki syntax plugin from
   <http://www.vim.org/scripts/script.php?script_id=1994>
+
+- Vimfluence uses the values in WIKI_EDITOR, VISUAL, or EDITOR to select the
+  editor. If none of these are set, Vimfluence defaults to the most powerful
+  editor known to makind.
 
 - Edit your "~/.profile" to set the wiki path:
 
