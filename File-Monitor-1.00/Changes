@@ -1,0 +1,38 @@
+Revision history for File-Monitor
+
+0.0.1   2007-02-01
+
+        Initial release.
+       
+0.0.2   2007-02-01
+
+        Removed idiotic idea of monitoring atime. What was I thinking?
+
+        Started work on Linux specific implementation.
+
+0.0.3   2007-02-02
+
+        Deprecated the direct creation of File::Monitor::Object and the
+        whole idea using individual F::M::O instances directly. We need
+        to enforce the idea of a parent object to support platform
+        specific monitoring support (which typically requires a monitor
+        instance with a number of watches attached to it).
+
+        Moved the Linux support into a separate (unreleased) branch.
+
+0.0.4   2007-02-07
+
+        Added the option (pass base argument to File::Monitor->new) to
+        use relative names internally. This is to support relocatable
+        trees - if the whole tree moves call 
+        $monitor->base( '/new/dir' ).
+
+0.0.5   2007-02-23
+
+        Added machine readable licence and pod-coverage.t
+
+0.10    2007-11-22
+
+        Stopped using version.pm
+        Fixed version.pm related bug - didn't have use version on the
+        version line.

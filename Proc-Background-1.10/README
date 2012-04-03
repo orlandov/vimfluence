@@ -1,0 +1,101 @@
+Package Proc::Background Version 1.10
+
+This is the Proc::Background package.  It provides a generic interface
+to running background processes.  Through this interface, users can
+run background processes on different operating systems without
+concerning themselves about the specifics of doing this.  Users of
+this package create new Proc::Background objects that provide an
+object oriented interface to process management.  The following
+methods are provided to users of the Proc::Background package:
+
+    new:        start a new background process.
+    alive:      test to see if the process is still alive.
+    die:        reliably try to kill the process.
+    wait:       wait for the process to exit and return the exit status.
+    start_time: return the time that the process started.
+    end_time:   return the time when the exit status was retrieved.
+
+A generic function, timed-system, is also included that lets a
+background process run for a specified amount of time, and if the
+process did not exit, then the process is killed.
+
+AVAILABILITY
+
+The latest released version of this package is available for download
+from a CPAN (Comprehensive Perl Archive Network) archive near you in
+
+    http://www.perl.com/CPAN/authors/id/B/BZ/BZAJAC/
+
+The latest beta version of this package is hosted in a Subversion
+repository located at
+
+    http://www.orcaware.com/svn/repos/perl_proc_background/trunk/
+
+Subversion is an open-source source code management system designed to
+replace CVS.  To get Subversion, see
+
+    http://subversion.tigris.org/
+
+and for an overview of Subversion, see
+
+    http://www.orcaware.com/svn/Subversion-Blair_Zajac.ppt
+
+INSTALLATION
+
+In order to use this package you will need Perl version 5.004_04 or
+better.
+
+On Win32 systems Proc::Background requires the Win32::Process module.
+To check if your Perl has Win32::Process installed on it, run
+
+    perl Makefile.PL
+
+If this command does not complain about missing Win32::Process, then
+you have the module installed.  If you receive an error message, you
+can do two things to resolve this.  If you have not performed
+extensive customization and installation of modules into your Perl,
+the easier path is to upgrade to the latest version of ActiveState
+Perl at
+
+    http://aspn.activestate.com/ASPN/Downloads/ActivePerl/
+
+which includes Win32::Process.  If you want to use your current Perl
+installation, then download the latest version of the libwin32 package
+by Gurusamy Sarathy available at:
+
+    http://www.perl.com/CPAN/authors/id/GSAR/
+
+Once that is completed, you install Proc::Background as you would
+install any perl module library, by running these commands:
+
+    perl Makefile.PL
+    make
+    make test
+    make install
+
+You can edit the configuration section of Makefile.PL to select which
+programs to install in addition to the library itself.  If you don't
+want to install any programs (only the library files) and don't want
+to mess with the Makefile.PL then pass the '-n' option to Makefile.PL:
+
+    perl Makefile.PL -n
+
+If you want to install a private copy of this package in some other
+directory, then you should try to produce the initial Makefile with
+something like this command:
+
+    perl Makefile.PL LIB=~/perl
+
+DOCUMENTATION
+
+See the CHANGES file for a list of recent changes.  POD style
+documentation is included in all modules and scripts.  These are
+normally converted to manual pages end installed as part of the "make
+install" process.  You should also be able to use the 'perldoc'
+utility to extract documentation from the module files directly.
+
+COPYRIGHT
+
+Copyright (C) 1998-2005 Blair Zajac.  All rights reserved.  This
+package is free software; you can redistribute it and/or modify it
+under the same terms as Perl itself.

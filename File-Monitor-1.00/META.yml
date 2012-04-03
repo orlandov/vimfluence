@@ -1,0 +1,33 @@
+---
+abstract: 'Monitor files and directories for changes.'
+author:
+  - 'Andy Armstrong <andy@hexten.net>'
+configure_requires:
+  Module::Build: 0.36
+generated_by: 'Module::Build version 0.3607'
+license: perl
+meta-spec:
+  url: http://module-build.sourceforge.net/META-spec-v1.4.html
+  version: 1.4
+name: File-Monitor
+provides:
+  File::Monitor:
+    file: lib/File/Monitor.pm
+    version: 1.00
+  File::Monitor::Base:
+    file: lib/File/Monitor/Base.pm
+    version: 1.00
+  File::Monitor::Delta:
+    file: lib/File/Monitor/Delta.pm
+    version: 1.00
+  File::Monitor::Object:
+    file: lib/File/Monitor/Object.pm
+    version: 1.00
+requires:
+  Test::More: 0
+  version: 0
+resources:
+  bugtracker: http://rt.cpan.org/NoAuth/Bugs.html?Dist=File-Monitor
+  license: http://dev.perl.org/licenses/
+  repository: 'git://github.com/AndyA/File--Monitor.git (fetch)'
+version: 1.00

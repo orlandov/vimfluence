@@ -5,11 +5,16 @@ package main;
 
 use strict;
 use warnings;
+use File::Basename;
 use Net::Netrc;
 use File::Temp qw( mkstemps );
 use Digest::MD5 qw( md5_hex );
 use URI::Split qw( uri_split uri_join );
 
+use lib (dirname(__FILE__)."/File-Monitor-1.00/lib");
+use lib (dirname(__FILE__)."/Proc-Background-1.10/lib");
+use File::Monitor;
+use Proc::Background;
 
 my ($wiki_url, $space, $title, $editor);
 
@@ -47,8 +52,26 @@ my ($fh, $filename) = mkstemps("tmpfileXXXXXX", ".confluencewiki");
 print $fh $output;
 close $fh;
 
+my $monitor = File::Monitor->new();
+$monitor->watch($filename, sub {
+		my ($name, $event, $change) = @_;
+		my $changedMD5 = md5_hex(readfile($filename));
+		if ($changedMD5 ne $initialMD5) {
+			$confluence->store_page($space, $title, $filename);
+			my $url = $wiki_url . "/display/$space/" . urlencode($title);
+		}
+		$initialMD5 = $changedMD5;
+});
+
 # system("vim +\"set ft=confluencewiki\" $filename");
-system("$editor  $filename");
+# system("$editor $filename");
+my $proc1 = Proc::Background->new("vim", $filename);
+
+while($proc1->alive) {
+	$monitor->scan;
+	sleep(.5);
+}
+
 my $afterMD5 = md5_hex(readfile($filename));
 
 if ($afterMD5 ne $initialMD5) {
@@ -97,9 +120,9 @@ sub urldecode {
 
 sub readfile {
   my $filename = shift;
-  open(my $fh, $filename);
-  my $s = join "", (<$fh>);
-  close $fh;
+  open(my $ofh, $filename);
+  my $s = join "", (<$ofh>);
+  close $ofh;
   return $s;
 }
 

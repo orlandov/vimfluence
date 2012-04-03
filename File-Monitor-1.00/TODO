@@ -1,0 +1,19 @@
+Things to do:
+
+    * Use native file monitoring interface on platforms where it's
+      available.
+
+    * Implement a "don't scan more frequently that every X seconds"
+      functionality.
+
+    * Directory scanning is hideously inefficient. For directories with
+      the 'files' flag set we only need to rescan the directory if stat
+      shows that it has been modified.
+
+    * Investigate whether changes to the monitored directory are
+      reported correctly under Windows.
+
+    * Implement more efficient polling in the degenerate case where you
+      only want to know if any of the monitored files has changed.
+      That's tricky because the current interface assumes that all the
+      File::Monitor::Objects are updated after each call to scan().
