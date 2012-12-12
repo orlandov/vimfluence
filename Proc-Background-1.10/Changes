@@ -1,0 +1,279 @@
+Sun Jul  5 15:40:32 PDT 2009
+
+	* Release version 1.10.
+
+Sun Jul  5 15:15:12 PDT 2009
+
+	* Makefile.PL: Resolve
+	  https://rt.cpan.org/Ticket/Display.html?id=47100 by passing
+	  PREREQ_PM to WriteMakefile().
+	  Patch by: Tomas Doran <bobtfish@bobtfish.net>
+
+Wed Jul  1 22:58:13 PDT 2009
+
+	* README: Correct the URL to the Subversion repository for
+	  this project.
+
+Wed Jul  1 22:46:11 PDT 2009
+
+	* Release version 1.09.
+
+Wed Jul  1 22:36:06 PDT 2009
+
+	* Makefile.PL: Switch from die() to warn() if Win32::Process
+	  isn't installed into a warning. When running under CPAN.pm,
+	  the die causes the install to fail before processing
+	  dependencies.  Reducing this to a warning means that CPAN
+	  will cleanly install Proc::Background and Win32::Process
+	  with no user intervention needed in strawberry perl or even
+	  ActiveState if you have a working make.
+	  Patch by: Tomas Doran <bobtfish@bobtfish.net>
+
+Sat Dec  7 09:41:58 PST 2002
+
+	* Release version 1.08.
+
+Sat Dec  7 09:33:53 PST 2002 <blair@orcaware.com> Blair Zajac
+
+	* lib/Proc/Background/Win32.pm (_new): When more than one
+	  argument is passed to _new in @_, each array element may be
+	  quoted to protect whitespace so that the final assembly of
+	  the individual arguments into one string, using "@_", that
+	  is passed to Win32::Process::Create works.  An empty string
+	  was not being protected and was lost from the command line
+	  arguments.  Bug fix by Jim Hahn <jrh3@att.com>.
+	* README: Note that this package is hosted in a Subversion
+	  repository and give its URL.
+	* Changes: Renamed from CHANGES.
+
+Sat Apr 20 19:27:53 PDT 2002 <blair@orcaware.com> Blair Zajac
+
+	* Release version 1.07.
+
+Sat Apr 20 18:55:46 PDT 2002 <blair@orcaware.com> Blair Zajac
+
+	* lib/Proc/Background/Win32.pm: Fix a bug spotted by John
+	  Kingsley <johnk@magma.ca> on Windows platforms where if
+	  Proc::Background->new is passed an absolute pathname to a
+	  program containing whitespace, then Win32::Process::Create
+	  will not be able to create the new process.  The solution is
+	  use Win32::GetShortPathName to convert the long pathname
+	  into a short pathname with no spaces.  Also eval "use
+	  Win32' to load Win32::GetShortPathName.
+
+Sat Apr 20 18:35:57 PDT 2002 <blair@orcaware.com> Blair Zajac
+
+	* lib/Proc/Background.pm: Fix a bug spotted by Ruben Diez
+	  <rdiez@activenav.com> in _resolve_path where if one of the
+	  directories in the PATH had a directory with the same name
+	  as the program being searched for, the directory would be
+	  used because they typically have execute permissions.  Now
+	  check for a file and the execute permissions before using
+	  the file.
+
+Sat Apr 20 18:19:27 PDT 2002 <blair@orcaware.com> Blair Zajac
+
+	* lib/Proc/Background.pm: Fix all cases where a string
+	  containing '0' would fail a test even though it should pass.
+	* lib/Proc/Background/Unix.pm: Ditto.
+	* lib/Proc/Background/Win32.pm: Ditto.
+
+Sat Sep  8 12:20:01 PDT 2001 <blair@orcaware.com> Blair Zajac
+
+	* Release version 1.06.
+
+Sat Sep  8 12:19:39 PDT 2001 <blair@orcaware.com> Blair Zajac
+
+	* t/01proc.t: On Cygwin test 46 fails intermittently when it
+	  tries to see if the spawned process is running by using
+	  kill(0, $pid).  It's not clear why this would happen, but
+	  sometimes kill returns 0, even though the process should be
+	  running.  Maybe it's the Cygwin layer that is causing the
+	  problem.  Adding a one second sleep before calling kill
+	  seems to cause the test to pass.
+	* t/sleep_exit.t: The sleep argument was being set to 1 even
+	  if the command line argument was 0 because $sleep was
+	  checked for trueness, not if it was defined.  Now check
+	  $sleep and $exit_status for being defined before setting
+	  them.
+	* README: Update the instructions for checking and installing
+	  Win32::Process for Perl on Windows.
+
+Tue Aug 28 12:54:44 PDT 2001 <blair@orcaware.com> Blair Zajac
+
+	* Release version 1.05.
+
+Tue Aug 28 12:34:15 PDT 2001 <blair@orcaware.com> Blair Zajac
+
+	* lib/Proc/Background.pm: The $VERSION variable was being set
+	  using
+
+	  $VERSION = substr q$Revision: 1.05 $, 10;'
+
+	  which did not properly set $VERSION to a numeric value in
+	  Perl 5.6.1 probably due to the trailing ' ' character after
+	  the number.  This resulted in 'use Proc::Background
+	  1.04' failing to force Perl to use version 1.04 or newer of
+	  Proc::Background even if 1.03 or older was installed because
+	  $VERSION was set using substr and Perl would not consider
+	  $VERSION to be set.  Now use the longer but effective:
+
+	  $VERSION = sprintf '%d.%02d', '$Revision: 1.05 $' =~ /(\d+)\.(\d+)/;
+
+	* lib/Proc/Background/Unix.pm: Ditto.
+	* lib/Proc/Background/Win32.pm: Ditto.
+
+Thu Aug 16 14:36:39 PDT 2001 <blair@orcaware.com> Blair Zajac
+
+	* Release version 1.04.
+
+Thu Aug 16 14:29:14 PDT 2001 <blair@orcaware.com> Blair Zajac
+
+	* lib/Proc/Background.pm: When new is passed an incorrect
+	  number of arguments, do confess using the class passed to
+	  new, rather use the hardwired Proc::Background class which
+	  will make error messages easier to understand since module
+	  complaining about the error will be the correct one.
+	* lib/Proc/Background/Unix.pm: Ditto, except for _new, not
+	  new.
+	* lib/Proc/Background/Win32.pm: Ditto, except for _new, not
+	  new.
+
+Thu Aug 16 14:00:41 PDT 2001 <blair@orcaware.com> Blair Zajac
+
+	* lib/Proc/Background.pm: Proc::Background::new can accept a
+	  reference to a hash as its first argument which contains
+	  key/value pairs to modify Proc::Background's behavior.
+	  Currently the only key understood is `die_upon_destroy'
+	  which has the process killed via die() when the
+	  Proc::Background object is being DESTROY'ed.
+	* t/01proc.t: Add tests to test the new options behavior.
+
+Thu Aug 16 13:30:23 PDT 2001 <blair@orcaware.com> Blair Zajac
+
+	* lib/Proc/Background.pm: No longer use cluck and return undef
+	  to warn about invalid arguments to function calls.  Instead
+	  just call confess to print the call stack and quit the
+	  script.
+	* lib/Proc/Background/Unix.pm: Ditto.
+	* lib/Proc/Background/Win32.pm: Ditto.
+
+Tue Aug 14 22:50:14 PDT 2001 <blair@orcaware.com> Blair Zajac
+
+	* lib/Proc/Background/Win32.pm: Remove an unnecessary loop
+	  label in _die.
+	* lib/Proc/Background.pm: Update the documentation to be
+	  clearer.
+	* README: Remove the reference to my FTP site, as it is no
+	  longer being used.
+	* README: Update all references to Blair Zajac's email
+	  addresses to blair@orcaware.com.
+	* CHANGES: Ditto.
+	* lib/Proc/Background/Unix.pm: Ditto.
+	* lib/Proc/Background/Win32.pm: Ditto.
+	* lib/Proc/Background.pm: Ditto.
+
+Sun Feb  4 13:54:37 PST 2001 <blair@orcaware.com> Blair Zajac
+
+	* Release version 1.03.
+
+Sun Feb  4 11:50:15 PST 2001 <blair@orcaware.com> Blair Zajac
+
+	* Add a new command line option to timed-process, -e, that
+	  takes an integer argument.  This value sets the exit value
+	  timed-process uses for its exit call when it has to kill the
+	  given program because the timeout elapsed.  This value is
+	  not used if the process exits before the timeout expires.
+	* t/01proc.t: Add tests for for the timed-process script.
+
+Sat Feb  3 14:21:32 PST 2001 <blair@orcaware.com> Blair Zajac
+
+	* Change all occurrences of Proc::Generic, which was the
+	  original name of this module, with Proc::Background in every
+	  file in the module.  This includes fixing the timed-process
+	  script which used Proc::Generic instead of Proc::Background.
+
+Mon Jan 15 16:05:04 PST 2001 <blair@orcaware.com> Blair Zajac
+
+	* Release version 1.02.
+
+Mon Jan 15 10:32:59 PST 2001 <blair@orcaware.com> Blair Zajac
+
+	* Make Proc::Background::new flexible enough to behave in the
+	  same manner as exec() or system() do when passed either a
+	  single or multiple arguments.  When the command to put in
+	  the background run is passed as an array with two or more
+	  elements, run the command directly without passing the
+	  command through the shell.  When a single argument is passed
+	  to Proc::Background::new, pass the command through the
+	  shell. Add a new test to the test suite to check a command
+	  passed as a single argument to Proc::Background::new.
+	* Remove 'Unrecognized escape \w passed through at
+	  Background.pm line 30' warning when using Perl 5.6.0.
+
+Wed Jun 21 09:51:37 PDT 2000 <blair@orcaware.com> Blair Zajac
+
+	* Release version 1.01.
+
+Wed Jun 21 09:47:33 PDT 2000 <blair@orcaware.com> Blair Zajac
+
+	* Proc::Background::Win32 used to only protect arguments that
+	  contained he space character by placing "'s around the
+	  argument.  Now, make sure that each individual argument to
+	  Proc::Backgrond ends up going to the Windows shell in such a
+	  way that the shell sees the argument as a single
+	  argument. This means escaping "'s that are not already
+	  escaped and placing "'s around the argument if it matches
+	  \s.  This will protect the string if it finds a \s in it and
+	  not just a space.
+
+Thu Apr 20 14:46:31 PDT 2000 <blair@orcaware.com> Blair Zajac
+
+	* Release version 1.00.
+
+Thu Apr 20 14:40:11 PDT 2000 <blair@orcaware.com> Blair Zajac
+
+	* In certain circumstances on older Perls, Proc::Background
+	  would complain that @_ could not be modified since it is a
+	  read only variable.  Make a copy of @_ and modify that.
+
+Wed Apr 19 19:50:51 PDT 2000 <blair@orcaware.com> Blair Zajac
+
+	* Release version 0.03.
+
+Wed Apr 19 14:47:58 PDT 2000 <blair@orcaware.com> Blair Zajac
+
+	* Relax the requirement that the path to the program has to be
+	  absolute.  If it is not absolute, then look for the absolute
+	  location of the program.
+
+	* Add a new method named pid that returns the process ID of
+	  the new process.
+
+Sun Jun 28 12:43:39 PDT 1998 <blair@orcaware.com> Blair Zajac
+
+	* Release version 0.02.
+
+Tue Jun 23 15:13:13 PDT 1998 <blair@orcaware.com> Blair Zajac
+
+	* Restructure the die method.  Keep the OS independent code
+	  for killing a process in Proc::Background and the OS
+	  dependent killing code in Proc::Background::*.
+	* Update the POD for Proc::Background to be more explicit
+	  about what start_time and end_time return.
+	* Fix bugs in Proc::Background::Win32.
+	* Update Makefile.PL to check for Win32::Process installed on
+	  Win32 systems.
+
+Thu Jun 18 14:52:01 PDT 1998 <blair@orcaware.com> Blair Zajac
+
+	* Update the README to indicate that libwin32 is only needed
+	  on Win32 systems.
+	* Remove calls to croak or die.  Call cluck instead.
+	* Fix the implementation documentation.
+	* Remove Proc::Background::Win32::alive since
+	  Proc::Background::alive works.
+
+Thu Apr 24 12:00:00 PDT 1998 <blair@orcaware.com> Blair Zajac
+
+	* Version 0.01

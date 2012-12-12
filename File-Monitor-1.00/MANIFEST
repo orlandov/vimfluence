@@ -1,0 +1,22 @@
+Build.PL
+Changes
+examples/monitor.pl
+inc/MyBuilder.pm
+lib/File/Monitor.pm
+lib/File/Monitor/Base.pm
+lib/File/Monitor/Delta.pm
+lib/File/Monitor/Object.pm
+MANIFEST
+README
+t/00.load.t
+t/10.monitor-basic.t
+t/20.change.t
+t/30.monitor.t
+t/40.relocate.t
+t/50.freeze.t
+t/pod-coverage.t
+t/pod.t
+TODO
+Makefile.PL
+META.yml
+SIGNATURE    Added here by Module::Build

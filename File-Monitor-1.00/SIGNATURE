@@ -1,0 +1,44 @@
+This file contains message digests of all files listed in MANIFEST,
+signed via the Module::Signature module, version 0.66.
+
+To verify the content in this distribution, first make sure you have
+Module::Signature installed, then type:
+
+    % cpansign -v
+
+It will check each file's integrity, as well as the signature's
+validity.  If "==> Signature verified OK! <==" is not displayed,
+the distribution may already have been compromised, and you should
+not run its Makefile.PL or Build.PL.
+
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+SHA1 647809324f9e520fcc0969d5c311c6c2febb9bba Build.PL
+SHA1 d35c91d3ec58747c22b8a5c686abd7a818bb45fb Changes
+SHA1 0ffa5ec1cb9ac442b7792153ad2ad203814eb5e5 MANIFEST
+SHA1 b79c267e62261e6bff43942a60563cffdfe55516 META.yml
+SHA1 af236a0645ca2d52ceb01fe952e403071e586cd6 Makefile.PL
+SHA1 a2b56cd87bf22b4ae4ca3c68886c60d19a31f69e README
+SHA1 291c593f6abfce030f5956f5b4ab0357daf0709a TODO
+SHA1 61f9b8adb2a40affde948e9b55238db0e4d33dcb examples/monitor.pl
+SHA1 495a358aecc9307d9b0622a31031ac1cf0cee75e inc/MyBuilder.pm
+SHA1 abc2856d38319eab85814a6f3c6f338bf63dc9a5 lib/File/Monitor.pm
+SHA1 d4be09a014e51a920645d0a9917eae7218efc9bd lib/File/Monitor/Base.pm
+SHA1 f3b0fc536f1e414cececb3562d6881c8581c398e lib/File/Monitor/Delta.pm
+SHA1 41019404b055c8f8e8490d0f3512fefb88035245 lib/File/Monitor/Object.pm
+SHA1 252bd2341acf7a2b878107f1c11d16529725af1b t/00.load.t
+SHA1 a8cea48fed0bca362d51227c52161f27cf47cca1 t/10.monitor-basic.t
+SHA1 18d84479e112b0e7bb3eed9efcc69edd1fb1e68b t/20.change.t
+SHA1 aa6c5c13ee59e2271ccfac9042369f1828f94cde t/30.monitor.t
+SHA1 3d96c7121018e99a8b44c5e7e1c44e1e4a38e736 t/40.relocate.t
+SHA1 d44e32f6333133f97728dfd619b5bcafc81249fb t/50.freeze.t
+SHA1 f48d66a797df256b32d58b187b87d08d5c23a051 t/pod-coverage.t
+SHA1 0190346d7072d458c8a10a45c19f86db641dcc48 t/pod.t
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.10 (Darwin)
+
+iEYEARECAAYFAkzIcCkACgkQwoknRJZQnCHmRwCfYgkQ3cx9NNMJM/5X5NsvLlfT
+DTIAn3srtNr7GaG2L1ZoFh03reVsmYrQ
+=d3V4
+-----END PGP SIGNATURE-----
